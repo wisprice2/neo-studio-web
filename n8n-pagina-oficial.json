@@ -1,0 +1,179 @@
+{
+    "name": "Pagina Oficial - Lead Capture",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "neo-lead-capture",
+                "responseMode": "onReceived",
+                "responseCode": 200,
+                "responseData": "allEntries",
+                "options": {
+                    "allowedOrigins": "*"
+                }
+            },
+            "id": "w1",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                480,
+                300
+            ],
+            "webhookId": "neo-lead"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "a1",
+                            "name": "Nombre",
+                            "value": "={{ $json.body.name }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a2",
+                            "name": "Email",
+                            "value": "={{ $json.body.email }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a3",
+                            "name": "Presupuesto",
+                            "value": "={{ $json.body.budget }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a4",
+                            "name": "Mensaje",
+                            "value": "={{ $json.body.message }}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a5",
+                            "name": "Fecha",
+                            "value": "={{ $now.format('yyyy-MM-dd HH:mm') }}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "w2",
+            "name": "Set Fields",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                720,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "mode": "url",
+                    "value": "https://docs.google.com/spreadsheets/d/1uEM2RS2RBhPzgtU5JB6Fg5maimCAV0hAV_d7lslixwY/edit"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "gid=0",
+                    "mode": "list",
+                    "cachedResultName": "Hoja 1",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uEM2RS2RBhPzgtU5JB6Fg5maimCAV0hAV_d7lslixwY/edit#gid=0"
+                },
+                "columns": {
+                    "mappingMode": "autoMapInputData",
+                    "value": {},
+                    "matchingColumns": [],
+                    "schema": [],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "id": "w3",
+            "name": "Google Sheets",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4,
+            "position": [
+                960,
+                300
+            ],
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "39CusyAOlpPmZnr4",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "sendTo": "={{ $json.Email }}",
+                "subject": "NEØ STUDIO - Hemos recibido tu solicitud",
+                "message": "=<div style=\"font-family:'Inter',sans-serif;max-width:600px;margin:0 auto;padding:40px 20px;background:#1a1a1a;color:#ffffff;border-radius:16px\">\n  <div style=\"text-align:center;margin-bottom:30px\">\n    <h1 style=\"color:#ff0055;font-size:28px;margin:0;font-weight:900;letter-spacing:2px\">NEØ STUDIO</h1>\n    <p style=\"color:#888;font-size:13px;letter-spacing:4px;margin-top:4px\">DIGITAL CRAFTSMANSHIP</p>\n  </div>\n  <h2 style=\"color:#ffffff;font-size:22px\">Hola {{ $json.Nombre }},</h2>\n  <p style=\"color:#cccccc;font-size:16px;line-height:1.7\">Gracias por contactarnos. Hemos recibido tu solicitud y un especialista técnico te contactará en <strong style=\"color:#ff0055\">menos de 24 horas</strong>.</p>\n  <div style=\"background:#2a2a2a;border-radius:12px;padding:20px;margin:24px 0;border-left:4px solid #ff0055\">\n    <p style=\"color:#999;font-size:14px;margin:0 0 8px 0\"><strong>Tu solicitud:</strong></p>\n    <p style=\"color:#eee;font-size:14px;margin:4px 0\">Presupuesto: {{ $json.Presupuesto }}</p>\n    <p style=\"color:#eee;font-size:14px;margin:4px 0\">Mensaje: {{ $json.Mensaje }}</p>\n  </div>\n  <p style=\"color:#cccccc;font-size:16px;line-height:1.7\">Mientras tanto, puedes escribirnos directamente por WhatsApp para una respuesta más rápida:</p>\n  <div style=\"text-align:center;margin:30px 0\">\n    <a href=\"https://wa.me/56937278183\" style=\"display:inline-block;background:#25D366;color:white;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:16px\">💬 WhatsApp Directo</a>\n  </div>\n  <hr style=\"border:none;border-top:1px solid #333;margin:30px 0\">\n  <p style=\"color:#666;font-size:12px;text-align:center\">Equipo NEØ STUDIO | Digital Craftsmanship</p>\n</div>",
+                "options": {
+                    "appendAttribution": false
+                }
+            },
+            "id": "w4",
+            "name": "Gmail",
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                1200,
+                300
+            ],
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "zpnAiOI7RSCpuqDF",
+                    "name": "Gmail account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Set Fields",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Set Fields": {
+            "main": [
+                [
+                    {
+                        "node": "Google Sheets",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Google Sheets": {
+            "main": [
+                [
+                    {
+                        "node": "Gmail",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "settings": {
+        "executionOrder": "v1"
+    },
+    "meta": {
+        "templateCredsSetupCompleted": true
+    }
+}

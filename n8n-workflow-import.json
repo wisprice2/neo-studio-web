@@ -1,0 +1,193 @@
+{
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "softdev-lead-capture",
+                "responseMode": "responseNode",
+                "options": {}
+            },
+            "id": "329254fa-51ed-476d-b4d4-7887d54b6c22",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                640,
+                176
+            ],
+            "webhookId": "softdev-contact"
+        },
+        {
+            "parameters": {
+                "assignments": {
+                    "assignments": [
+                        {
+                            "id": "a1",
+                            "name": "Nombre",
+                            "value": "={{$json.body.name}}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a2",
+                            "name": "Email",
+                            "value": "={{$json.body.email}}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a3",
+                            "name": "Presupuesto",
+                            "value": "={{$json.body.budget}}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a4",
+                            "name": "Mensaje",
+                            "value": "={{$json.body.message}}",
+                            "type": "string"
+                        },
+                        {
+                            "id": "a5",
+                            "name": "Fecha",
+                            "value": "={{$now.format('yyyy-MM-dd HH:mm')}}",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "6cf4302d-630d-4b55-9939-424ec1310dd0",
+            "name": "Set Fields",
+            "type": "n8n-nodes-base.set",
+            "typeVersion": 3.4,
+            "position": [
+                896,
+                176
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "mode": "url",
+                    "value": "https://docs.google.com/spreadsheets/d/1uEM2RS2RBhPzgtU5JB6Fg5maimCAV0hAV_d7lslixwY/edit"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "gid=0",
+                    "mode": "list",
+                    "cachedResultName": "Hoja 1",
+                    "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1uEM2RS2RBhPzgtU5JB6Fg5maimCAV0hAV_d7lslixwY/edit#gid=0"
+                },
+                "columns": {
+                    "mappingMode": "autoMapInputData",
+                    "value": {},
+                    "matchingColumns": [],
+                    "schema": [],
+                    "attemptToConvertTypes": false,
+                    "convertFieldsToString": false
+                },
+                "options": {}
+            },
+            "id": "721d3ca0-9c3e-470b-89e1-a323b8202fca",
+            "name": "Google Sheets",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4,
+            "position": [
+                1152,
+                176
+            ],
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "39CusyAOlpPmZnr4",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "sendTo": "={{$json.Email}}",
+                "subject": "SoftDev - Hemos recibido tu solicitud",
+                "message": "==<div style=\"font-family:'Inter',sans-serif;max-width:600px;margin:0 auto;padding:40px 20px\">\n  <div style=\"text-align:center;margin-bottom:30px\">\n    <h1 style=\"color:#6366F1;font-size:28px;margin:0\">SoftDev</h1>\n    <p style=\"color:#94a3b8;font-size:14px\">Digital Craftsmanship</p>\n  </div>\n  <h2 style=\"color:#1e293b;font-size:22px\">Hola {{$json.Nombre}},</h2>\n  <p style=\"color:#475569;font-size:16px;line-height:1.7\">Gracias por contactarnos. Hemos recibido tu solicitud y un especialista técnico te contactará en <strong>menos de 24 horas</strong>.</p>\n  <div style=\"background:#f8fafc;border-radius:12px;padding:20px;margin:24px 0;border-left:4px solid #6366F1\">\n    <p style=\"color:#64748b;font-size:14px;margin:0 0 8px 0\"><strong>Tu solicitud:</strong></p>\n    <p style=\"color:#334155;font-size:14px;margin:4px 0\">Presupuesto: {{$json.Presupuesto}}</p>\n    <p style=\"color:#334155;font-size:14px;margin:4px 0\">Mensaje: {{$json.Mensaje}}</p>\n  </div>\n  <p style=\"color:#475569;font-size:16px;line-height:1.7\">Mientras tanto, puedes agendar una llamada estrategica directamente:</p>\n  <div style=\"text-align:center;margin:30px 0\">\n    <a href=\"https://calendly.com/softdev/discovery\" style=\"display:inline-block;background:#6366F1;color:white;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:16px\">Agendar Llamada de 15 min</a>\n  </div>\n  <hr style=\"border:none;border-top:1px solid #e2e8f0;margin:30px 0\">\n  <p style=\"color:#94a3b8;font-size:12px;text-align:center\">Equipo SoftDev | Digital Craftsmanship</p>\n</div>",
+                "options": {
+                    "appendAttribution": false
+                }
+            },
+            "id": "424bafe9-8cea-4547-bcd4-f7c25eeb192a",
+            "name": "Gmail",
+            "type": "n8n-nodes-base.gmail",
+            "typeVersion": 2.1,
+            "position": [
+                1392,
+                176
+            ],
+            "credentials": {
+                "gmailOAuth2": {
+                    "id": "zpnAiOI7RSCpuqDF",
+                    "name": "Gmail account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={\"status\":\"ok\",\"message\":\"Solicitud recibida correctamente. Te contactaremos pronto.\"}",
+                "options": {}
+            },
+            "id": "b8ac07b5-ad15-448a-9d99-a325218f1e65",
+            "name": "Respond",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1.1,
+            "position": [
+                1648,
+                176
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Set Fields",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Set Fields": {
+            "main": [
+                [
+                    {
+                        "node": "Google Sheets",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Google Sheets": {
+            "main": [
+                [
+                    {
+                        "node": "Gmail",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Gmail": {
+            "main": [
+                [
+                    {
+                        "node": "Respond",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
