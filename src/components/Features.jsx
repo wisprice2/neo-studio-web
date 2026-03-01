@@ -18,7 +18,7 @@ function DiagnosticDeck() {
     }, [cards.length])
 
     return (
-        <div className="relative h-64 w-full max-w-sm mx-auto perspective-1000">
+        <div className="relative h-72 w-full max-w-sm mx-auto perspective-1000">
             {cards.map((card, i) => {
                 const Icon = card.icon
                 const isActive = i === activeIndex
@@ -75,7 +75,7 @@ function LiveTelemetry() {
     }, [text, msgIndex, messages])
 
     return (
-        <div className="bg-[#1A1A1A] text-[#F2F0E9] p-6 rounded-3xl border border-white/10 font-mono text-sm relative overflow-hidden h-40 flex flex-col justify-center">
+        <div className="bg-[#1A1A1A] text-[#F2F0E9] p-6 rounded-3xl border border-white/10 font-mono text-sm relative overflow-hidden h-72 flex flex-col justify-center">
             <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 rounded-full bg-clay animate-pulse"></div>
                 <span className="text-clay text-xs tracking-widest uppercase">Sistema Activo</span>
@@ -89,50 +89,90 @@ function LiveTelemetry() {
     )
 }
 
-// Sub-component: Protocol Grid
+// Sub-component: Protocol Grid with Matrix Clock
 function ProtocolGrid() {
     const days = ['L', 'M', 'X', 'J', 'V', 'S', 'D']
-    const containerRef = useRef(null)
+    const dayNames = ['D', 'L', 'M', 'X', 'J', 'V', 'S'] // JS Sunday=0
+    const [currentTime, setCurrentTime] = useState('')
+    const [currentDay, setCurrentDay] = useState(0)
+    const canvasRef = useRef(null)
 
-    // A CSS-only animation approach for the cursor to keep things lightweight
-    // Alternatively GSAP can be used, but keyframes on a specific class work perfectly for a loop
+    // Get Chile time and update every second
+    useEffect(() => {
+        const updateTime = () => {
+            const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Santiago' }))
+            const hours = now.getHours().toString().padStart(2, '0')
+            const mins = now.getMinutes().toString().padStart(2, '0')
+            const secs = now.getSeconds().toString().padStart(2, '0')
+            setCurrentTime(`${hours}:${mins}:${secs}`)
+            // Map JS day (0=Sun) to our array (0=L Monday)
+            const jsDay = now.getDay()
+            setCurrentDay(jsDay === 0 ? 6 : jsDay - 1)
+        }
+        updateTime()
+        const interval = setInterval(updateTime, 1000)
+        return () => clearInterval(interval)
+    }, [])
+
+    // Matrix rain effect on canvas
+    useEffect(() => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+        const ctx = canvas.getContext('2d')
+        canvas.width = canvas.offsetWidth
+        canvas.height = 80
+        const chars = 'アイウエオカキクケコ01サシスセソタチツテト'.split('')
+        const cols = Math.floor(canvas.width / 14)
+        const drops = Array(cols).fill(1)
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(255,255,255,0.15)'
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
+            ctx.fillStyle = '#00ff41'
+            ctx.font = '12px monospace'
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)]
+                ctx.fillText(text, i * 14, drops[i] * 14)
+                if (drops[i] * 14 > canvas.height && Math.random() > 0.97) drops[i] = 0
+                drops[i]++
+            }
+        }
+        const interval = setInterval(draw, 60)
+        return () => clearInterval(interval)
+    }, [])
 
     return (
-        <div className="p-6 bg-white rounded-3xl border border-moss/10 relative overflow-hidden h-64 group">
-            <h4 className="font-sans font-bold text-moss mb-4">Protocolo</h4>
-            <div className="grid grid-cols-7 gap-2" ref={containerRef}>
-                {days.map((day, i) => (
-                    <div key={day} className={`aspect-square flex items-center justify-center rounded-lg text-xs font-bold transition-colors duration-300
-            ${i === 2 ? 'bg-moss text-white shadow-lg' : 'bg-cream text-charcoal/50'}
-          `}>
-                        {day}
-                    </div>
-                ))}
+        <div className="p-6 bg-white rounded-3xl border border-moss/10 relative overflow-hidden h-72 flex flex-col justify-between">
+            <div>
+                <h4 className="font-sans font-bold text-moss mb-4">Protocolo</h4>
+                <div className="grid grid-cols-7 gap-2">
+                    {days.map((day, i) => (
+                        <div key={day} className={`aspect-square flex items-center justify-center rounded-xl text-sm font-bold transition-all duration-500
+                            ${i === currentDay
+                                ? 'bg-moss text-white shadow-lg shadow-moss/30 ring-2 ring-moss/40 scale-105'
+                                : 'bg-cream text-charcoal/40 hover:bg-moss/10'}`}>
+                            {day}
+                        </div>
+                    ))}
+                </div>
             </div>
 
-            <div className="mt-8 flex justify-end">
-                <button className="bg-charcoal text-white text-xs px-4 py-2 flex items-center gap-2 rounded-full cursor-not-allowed">
-                    Guardar Selección
-                </button>
+            {/* Matrix Clock */}
+            {/* Matrix Clock */}
+            <div className="relative bg-[#0a0a0a] rounded-2xl overflow-hidden flex-1 min-h-[5rem] mt-4">
+                <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-30" />
+                <div className="relative z-10 flex flex-col items-center justify-center h-full py-3">
+                    <span className="font-mono text-2xl md:text-3xl font-black tracking-[0.25em]"
+                        style={{
+                            color: '#00ff41',
+                            textShadow: '0 0 8px #00ff41, 0 0 16px #00ff4180, 0 0 32px #00cc3340',
+                            filter: 'drop-shadow(0 0 6px #00ff41)'
+                        }}>
+                        {currentTime}
+                    </span>
+                    <span className="font-mono text-[10px] text-green-500/60 tracking-[0.5em] mt-1 uppercase">Santiago</span>
+                </div>
             </div>
-
-            {/* Automated SVG Cursor */}
-            <MousePointer2
-                size={24}
-                className="absolute w-6 h-6 text-clay fill-clay/20 pointer-events-none drop-shadow-md z-10 hidden group-hover:block
-        animate-[cursor-demo_4s_ease-in-out_infinite]"
-                style={{ transformOrigin: 'top left' }}
-            />
-            <style>{`
-        @keyframes cursor-demo {
-          0% { top: 90%; left: 90%; transform: scale(1); }
-          30% { top: 4rem; left: 35%; transform: scale(1); }
-          35% { top: 4rem; left: 35%; transform: scale(0.8); }
-          40% { top: 4rem; left: 35%; transform: scale(1); }
-          70% { top: 70%; left: 70%; transform: scale(1); }
-          100% { top: 90%; left: 90%; transform: scale(1); }
-        }
-      `}</style>
         </div>
     )
 }
