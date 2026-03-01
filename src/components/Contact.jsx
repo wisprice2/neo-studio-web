@@ -13,7 +13,7 @@ export default function Contact() {
         const payload = {
             name: form.name.value,
             email: form.email.value,
-            budget: form.budget.value,
+            phone: form.phone.value,
             message: form.message.value
         }
 
@@ -100,19 +100,15 @@ export default function Contact() {
                         </div>
 
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="budget" className="font-sans text-sm font-bold text-moss">Presupuesto Aproximado (USD)</label>
-                            <select
-                                id="budget"
-                                name="budget"
+                            <label htmlFor="phone" className="font-sans text-sm font-bold text-moss">Número de Teléfono</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
                                 required
-                                className="bg-white/50 border border-moss/20 rounded-xl px-4 py-3 focus:outline-none focus:border-clay focus:ring-1 focus:ring-clay transition-all appearance-none"
-                            >
-                                <option value="" disabled selected>Selecciona un rango...</option>
-                                <option value="< $1,000">{'< $1,000'}</option>
-                                <option value="$1,000 - $3,000">{'$1,000 - $3,000'}</option>
-                                <option value="$3,000 - $5,000">{'$3,000 - $5,000'}</option>
-                                <option value="$5,000+">{'$5,000+'}</option>
-                            </select>
+                                className="bg-white/50 border border-moss/20 rounded-xl px-4 py-3 focus:outline-none focus:border-clay focus:ring-1 focus:ring-clay transition-all"
+                                placeholder="+56 9 1234 5678"
+                            />
                         </div>
 
                         <div className="flex flex-col gap-2">
