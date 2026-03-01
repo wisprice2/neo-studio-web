@@ -18,7 +18,7 @@ function DiagnosticDeck() {
     }, [cards.length])
 
     return (
-        <div className="relative h-72 w-full max-w-sm mx-auto perspective-1000">
+        <div className="relative h-48 w-full perspective-1000">
             {cards.map((card, i) => {
                 const Icon = card.icon
                 const isActive = i === activeIndex
@@ -36,9 +36,9 @@ function DiagnosticDeck() {
                             borderTop: isActive ? '2px solid #CC5833' : '1px solid rgba(255,255,255,0.2)'
                         }}
                     >
-                        <Icon size={24} className={isActive ? "text-clay" : "text-moss"} />
-                        <h4 className="font-sans font-bold text-xl mt-4 text-moss">{card.title}</h4>
-                        <p className="font-sans text-sm text-charcoal/70 mt-2">{card.desc}</p>
+                        <Icon size={20} className={isActive ? "text-clay" : "text-moss"} />
+                        <h4 className="font-sans font-bold text-lg mt-2 text-moss">{card.title}</h4>
+                        <p className="font-sans text-xs text-charcoal/70 mt-1">{card.desc}</p>
                     </div>
                 )
             })}
@@ -75,7 +75,7 @@ function LiveTelemetry() {
     }, [text, msgIndex, messages])
 
     return (
-        <div className="bg-[#1A1A1A] text-[#F2F0E9] p-6 rounded-3xl border border-white/10 font-mono text-sm relative overflow-hidden h-72 flex flex-col justify-center">
+        <div className="bg-[#1A1A1A] text-[#F2F0E9] p-6 rounded-3xl border border-white/10 font-mono text-sm relative overflow-hidden h-48 flex flex-col justify-center">
             <div className="flex items-center gap-2 mb-4">
                 <div className="w-2 h-2 rounded-full bg-clay animate-pulse"></div>
                 <span className="text-clay text-xs tracking-widest uppercase">Sistema Activo</span>
@@ -142,10 +142,10 @@ function ProtocolGrid() {
     }, [])
 
     return (
-        <div className="p-6 bg-white rounded-3xl border border-moss/10 relative overflow-hidden h-72 flex flex-col justify-between">
+        <div className="p-5 bg-white rounded-3xl border border-moss/10 relative overflow-hidden h-48 flex flex-col justify-between">
             <div>
-                <h4 className="font-sans font-bold text-moss mb-4">Protocolo</h4>
-                <div className="grid grid-cols-7 gap-2">
+                <h4 className="font-sans font-bold text-moss text-sm mb-2">Protocolo</h4>
+                <div className="grid grid-cols-7 gap-1.5">
                     {days.map((day, i) => (
                         <div key={day} className={`aspect-square flex items-center justify-center rounded-xl text-sm font-bold transition-all duration-500
                             ${i === currentDay
@@ -159,18 +159,18 @@ function ProtocolGrid() {
 
             {/* Matrix Clock */}
             {/* Matrix Clock */}
-            <div className="relative bg-[#0a0a0a] rounded-2xl overflow-hidden flex-1 min-h-[5rem] mt-4">
+            <div className="relative bg-[#0a0a0a] rounded-xl overflow-hidden mt-2">
                 <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-30" />
-                <div className="relative z-10 flex flex-col items-center justify-center h-full py-3">
-                    <span className="font-mono text-2xl md:text-3xl font-black tracking-[0.25em]"
+                <div className="relative z-10 flex flex-col items-center justify-center py-2">
+                    <span className="font-mono text-xl font-black tracking-[0.2em]"
                         style={{
                             color: '#00ff41',
-                            textShadow: '0 0 8px #00ff41, 0 0 16px #00ff4180, 0 0 32px #00cc3340',
-                            filter: 'drop-shadow(0 0 6px #00ff41)'
+                            textShadow: '0 0 8px #00ff41, 0 0 16px #00ff4180',
+                            filter: 'drop-shadow(0 0 4px #00ff41)'
                         }}>
                         {currentTime}
                     </span>
-                    <span className="font-mono text-[10px] text-green-500/60 tracking-[0.5em] mt-1 uppercase">Santiago</span>
+                    <span className="font-mono text-[9px] text-green-500/50 tracking-[0.4em] uppercase">Santiago</span>
                 </div>
             </div>
         </div>
