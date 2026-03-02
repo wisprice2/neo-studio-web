@@ -26,6 +26,14 @@ const PROJECTS = [
     },
     {
         id: "04",
+        title: "Café Aromas",
+        description: "Cafetería specialty - Landing page cálida y elegante",
+        tech: "HTML / CSS / Vercel",
+        link: "https://cafe-aromas.vercel.app",
+        image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800",
+    },
+    {
+        id: "05",
         title: "Protocolo de Conversión",
         description: "Optimización de embudos de venta",
         tech: "Vite / GSAP / Tailwind",
