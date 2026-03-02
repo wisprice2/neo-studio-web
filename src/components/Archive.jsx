@@ -42,6 +42,16 @@ const PROJECTS = [
     },
     {
         id: "06",
+        title: "El Arte del Cabello",
+        description: "Peluquería premium - Landing page con reservas",
+        tech: "HTML / CSS / Vercel",
+        link: "https://arte-del-cabello.vercel.app",
+        image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800",
+    },
+        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
+    },
+    {
+        id: "06",
         title: "Protocolo de Conversión",
         description: "Optimización de embudos de venta",
         tech: "Vite / GSAP / Tailwind",
