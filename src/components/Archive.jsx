@@ -16,6 +16,14 @@ const ARCHIVE_DATA = [
     },
     {
         id: "03",
+        title: "Sabores del Mar",
+        tech: "HTML / CSS / Vercel",
+        animationType: "image",
+        imageUrl: "https://lh3.googleusercontent.com/aida/AOfcidVoodNIofnJp860MqYRsF-mSKCg9d5dDVv3oF_d8VdKwS_gzk6HpmsxMmGeudAcybTSwRW9wV2SRjm0_mxEHCxNC5H1vPK5d-h6aU8Zg69yX2100uADtjpXUAmjBYxeKspwJxufvnJIVQ02U--mcAIGbkL2O3L8Y-DsVGNiijN6sMrd0IgJ-RI3aZTRnuNA94Bj18OUHg1T3ywbYJyt0iX3m6rwYBJp6x8m6FLeoYj9ezJMKjR5jKbUK1I",
+        linkUrl: "https://sabores-del-mar.vercel.app",
+    },
+    {
+        id: "04",
         title: "Protocolo de Conversión",
         tech: "Vite / GSAP / Tailwind",
         animationType: "waveform",
@@ -85,6 +93,15 @@ export default function Archive() {
 
                             {/* Right Side: Abstract Animation based on type */}
                             <div className="flex-1 relative overflow-hidden flex items-center justify-center bg-black/20">
+                                {project.animationType === 'image' && project.imageUrl && (
+                                    <a href={project.linkUrl} target="_blank" rel="noopener noreferrer" className="w-full h-full">
+                                        <img 
+                                            src={project.imageUrl} 
+                                            alt={project.title}
+                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                                        />
+                                    </a>
+                                )}
                                 {project.animationType === 'helix' && (
                                     <div className="w-64 h-64 border-4 border-dashed border-moss rounded-full animate-[spin_10s_linear_infinite]" />
                                 )}
