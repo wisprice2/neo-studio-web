@@ -48,10 +48,8 @@ const PROJECTS = [
         link: "https://arte-del-cabello.vercel.app",
         image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800",
     },
-        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
-    },
     {
-        id: "06",
+        id: "07",
         title: "Protocolo de Conversión",
         description: "Optimización de embudos de venta",
         tech: "Vite / GSAP / Tailwind",
