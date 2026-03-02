@@ -1,142 +1,109 @@
 import { useLayoutEffect, useRef } from 'react'
-import gsap from 'gsap'
+import { ExternalLink } from 'lucide-react'
 
-const ARCHIVE_DATA = [
+const PROJECTS = [
     {
         id: "01",
         title: "Motor de Búsqueda Kntcl",
+        description: "Sistema de búsqueda inteligente con IA",
         tech: "React / Python / ChromaDB",
-        animationType: "helix",
+        link: "#",
     },
     {
-        id: "02",
+        id: "02", 
         title: "Sistema de Telemetría",
+        description: "Dashboard en tiempo real con visualizaciones",
         tech: "Next.js / WebGL / Node",
-        animationType: "laser",
+        link: "#",
     },
     {
         id: "03",
         title: "Sabores del Mar",
+        description: "Restaurant Fine Dining - Landing page completa",
         tech: "HTML / CSS / Vercel",
-        animationType: "image",
-        imageUrl: "https://lh3.googleusercontent.com/aida/AOfcidVoodNIofnJp860MqYRsF-mSKCg9d5dDVv3oF_d8VdKwS_gzk6HpmsxMmGeudAcybTSwRW9wV2SRjm0_mxEHCxNC5H1vPK5d-h6aU8Zg69yX2100uADtjpXUAmjBYxeKspwJxufvnJIVQ02U--mcAIGbkL2O3L8Y-DsVGNiijN6sMrd0IgJ-RI3aZTRnuNA94Bj18OUHg1T3ywbYJyt0iX3m6rwYBJp6x8m6FLeoYj9ezJMKjR5jKbUK1I",
-        linkUrl: "https://sabores-del-mar.vercel.app",
+        link: "https://sabores-del-mar.vercel.app",
+        image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800",
     },
     {
         id: "04",
         title: "Protocolo de Conversión",
+        description: "Optimización de embudos de venta",
         tech: "Vite / GSAP / Tailwind",
-        animationType: "waveform",
+        link: "#",
     }
 ]
 
 export default function Archive() {
     const containerRef = useRef(null)
-    const cardsRef = useRef([])
-
-    useLayoutEffect(() => {
-        const ctx = gsap.context(() => {
-            // Loop through all cards except the last one
-            cardsRef.current.forEach((card, index) => {
-                if (index === cardsRef.current.length - 1) return; // Last card doesn't need to shrink
-
-                gsap.to(card, {
-                    scale: 0.9,
-                    opacity: 0.5,
-                    filter: "blur(20px)",
-                    scrollTrigger: {
-                        trigger: cardsRef.current[index + 1],
-                        start: "top bottom", // Starts when the next card enters from the bottom
-                        end: "top top",     // Ends when the next card reaches the top
-                        scrub: true,
-                    }
-                })
-            })
-        }, containerRef)
-
-        return () => ctx.revert()
-    }, [])
 
     return (
-        <section ref={containerRef} id="proyectos" className="relative w-full bg-charcoal text-cream pb-32">
-            <div className="pt-32 pb-16 px-8 md:px-16 max-w-7xl mx-auto">
+        <section ref={containerRef} id="proyectos" className="relative w-full bg-charcoal text-cream py-32">
+            <div className="px-8 md:px-16 max-w-7xl mx-auto">
                 <h3 className="font-sans font-bold text-sm tracking-widest uppercase text-moss mb-4">
-                    Archivo //
+                    Portafolio //
                 </h3>
-                <h2 className="font-serif italic text-5xl md:text-7xl">
-                    Visualización de Proyectos
+                <h2 className="font-serif italic text-5xl md:text-7xl mb-20">
+                    Proyectos Realizados
                 </h2>
             </div>
 
-            <div className="relative w-full px-4 md:px-8 mt-12 flex flex-col gap-[10dvh] pb-[20dvh]">
-                {ARCHIVE_DATA.map((project, i) => (
-                    <div
-                        key={project.id}
-                        ref={(el) => (cardsRef.current[i] = el)}
-                        className="sticky top-[10dvh] h-[80dvh] w-full max-w-6xl mx-auto rounded-[3rem] overflow-hidden border border-white/10 flex items-center justify-center
-            bg-moss/10 backdrop-blur-3xl transform-gpu will-change-transform"
-                    >
-                        {/* Inner Content */}
-                        <div className="absolute inset-0 flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-white/10">
-
-                            {/* Left Side: Data */}
-                            <div className="flex-1 p-12 flex flex-col justify-between">
-                                <div className="font-mono text-clay text-sm flex items-center justify-between">
-                                    <span>EXP. {project.id}</span>
-                                    <span className="animate-pulse w-2 h-2 rounded-full bg-clay block" />
+            <div className="px-4 md:px-8 max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {PROJECTS.map((project, i) => (
+                        <a 
+                            key={project.id}
+                            href={project.link}
+                            target={project.link.startsWith('http') ? "_blank" : "_self"}
+                            rel="noopener noreferrer"
+                            className="group relative bg-moss/5 border border-white/10 rounded-3xl overflow-hidden hover:border-moss/40 transition-all duration-500"
+                        >
+                            {/* Image if exists */}
+                            {project.image && (
+                                <div className="h-64 overflow-hidden">
+                                    <img 
+                                        src={project.image} 
+                                        alt={project.title}
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                    />
                                 </div>
+                            )}
+
+                            <div className={`p-8 ${!project.image ? 'h-full min-h-[280px] flex flex-col justify-between' : ''}`}>
+                                <div className="flex items-start justify-between mb-4">
+                                    <span className="font-mono text-moss text-sm">EXP. {project.id}</span>
+                                    {project.link.startsWith('http') && (
+                                        <ExternalLink className="w-5 h-5 text-white/40 group-hover:text-clay transition-colors" />
+                                    )}
+                                </div>
+                                
                                 <div>
-                                    <h3 className="font-sans text-4xl md:text-5xl font-bold mb-4">{project.title}</h3>
-                                    <p className="font-mono text-white/50">{project.tech}</p>
+                                    <h3 className="font-sans text-2xl md:text-3xl font-bold mb-2 group-hover:text-clay transition-colors">
+                                        {project.title}
+                                    </h3>
+                                    <p className="text-white/50 mb-4">{project.description}</p>
+                                    <p className="font-mono text-xs text-white/30">{project.tech}</p>
                                 </div>
-                            </div>
 
-                            {/* Right Side: Abstract Animation based on type */}
-                            <div className="flex-1 relative overflow-hidden flex items-center justify-center bg-black/20">
-                                {project.animationType === 'image' && project.imageUrl && (
-                                    <a href={project.linkUrl} target="_blank" rel="noopener noreferrer" className="w-full h-full">
-                                        <img 
-                                            src={project.imageUrl} 
-                                            alt={project.title}
-                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                                        />
-                                    </a>
-                                )}
-                                {project.animationType === 'helix' && (
-                                    <div className="w-64 h-64 border-4 border-dashed border-moss rounded-full animate-[spin_10s_linear_infinite]" />
-                                )}
-                                {project.animationType === 'laser' && (
-                                    <div className="w-full h-full relative">
-                                        <div className="absolute inset-0 border-[1px] border-moss/30" style={{ backgroundSize: '40px 40px', backgroundImage: 'linear-gradient(to right, rgba(46,64,54,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(46,64,54,0.1) 1px, transparent 1px)' }} />
-                                        <div className="w-full h-1 bg-clay/80 absolute top-0 animate-[move-down_3s_linear_infinite]" />
-                                    </div>
-                                )}
-                                {project.animationType === 'waveform' && (
-                                    <div className="flex items-center gap-2 h-32">
-                                        {[...Array(15)].map((_, i) => (
-                                            <div
-                                                key={i}
-                                                className="w-2 bg-moss rounded-full animate-pulse"
-                                                style={{ height: `${Math.random() * 100}%`, animationDelay: `${i * 0.1}s` }}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
+                                {/* Hover effect line */}
+                                <div className="absolute bottom-0 left-0 h-1 bg-clay transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                             </div>
-                        </div>
-
-                    </div>
-                ))}
+                        </a>
+                    ))}
+                </div>
             </div>
 
             <style>{`
-        @keyframes move-down {
-          0% { top: 0; opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { top: 100%; opacity: 0; }
-        }
-      `}</style>
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(40px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            `}</style>
         </section>
     )
 }
