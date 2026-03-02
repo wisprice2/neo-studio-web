@@ -54,6 +54,13 @@ export default function Footer() {
                         </span>
                     </div>
                 </div>
+
+                {/* Copyright */}
+                <div className="text-center pt-8 border-t border-white/10">
+                    <p className="font-mono text-xs text-white/40">
+                        © 2026 NEO STUDIO. Todos los derechos reservados.
+                    </p>
+                </div>
             </div>
         </footer>
     )
