@@ -34,6 +34,14 @@ const PROJECTS = [
     },
     {
         id: "05",
+        title: "Biobío Experiences",
+        description: "Turismo premium - Landing page de turismo en el Biobío",
+        tech: "HTML / CSS / Vercel",
+        link: "https://biobio-experiences.vercel.app",
+        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800",
+    },
+    {
+        id: "06",
         title: "Protocolo de Conversión",
         description: "Optimización de embudos de venta",
         tech: "Vite / GSAP / Tailwind",
